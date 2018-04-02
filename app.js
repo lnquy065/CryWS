@@ -17,11 +17,13 @@ app.use(bodyParser.urlencoded( {extended: true}));
     //--morgan: ghi log http request
 app.use(morgan('dev'));
 
+    //--public resource
+app.use('/res/coins', express.static('res/coins'));
+
     //--routing: dinh tuyen
 app.use('/', router);
 
-    //--public resource
-app.use('/res/coins', express.static('res/coins'));
+
 
 
 //start server
