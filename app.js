@@ -8,7 +8,6 @@ var config = require('./config');   //configs
 
 //server init
 var app = express();
-var port = 3000;
 
 //middleware    
     //--body-parser: xu ly json, text, ma hoa url
@@ -26,7 +25,7 @@ app.use('/res/coins', express.static('res/coins'));
 
 
 //start server
-app.listen(port, () => console.log("Server is running"));
+app.listen((process.env.PORT || 3000), () => console.log("Server is running"));
 
 
 var cron = require('cron');
