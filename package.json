@@ -4,7 +4,8 @@
   "description": "CryptoCurrency Web Service",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node app.js"
   },
   "author": "D14CQCP01 CryWS Team",
   "license": "ISC",
@@ -22,4 +23,5 @@
     "pixel-bmp": "0.0.1",
     "pixel-png": "0.0.1"
   }
+  
 }
