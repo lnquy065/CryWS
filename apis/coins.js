@@ -33,11 +33,11 @@ var createCoinValues = (req, res) => {
 }
 
 var getAllCoins_NonChart = (req, res) => {
-    getCoinsInRange_f(req, res, 7, true, false, '');
+    getCoinsInRange_f(req, res, 7, true, false);
  }
 
  var getCoins_NonChart = (req, res) => {
-    getCoinsInRange_f(req, res, 7, false, false, '');
+    getCoinsInRange_f(req, res, 7);
  }
 
  var getAllCoins_chart7days = (req, res) => {
@@ -50,17 +50,28 @@ var getAllCoins_NonChart = (req, res) => {
 
 
 var getAllCoins = (req, res) => {
-    getCoinsInRange_f(req, res, 7, true, true, '');
+    getCoinsInRange_f(req, res, 7, true, true);
  }
 
  var getCoins = (req, res) => {
-    getCoinsInRange_f(req, res, 7, false, true, '');
+    getCoinsInRange_f(req, res, 7, false, true);
  }
 
 var getCoinsInRange = (req, res) => {
-    getCoinsInRange_f(req, res, req.params.timerange, false, true, '');
+    getCoinsInRange_f(req, res, req.params.timerange, false, true);
 }
 
+var getAllCoins_NonChart_Offset = (req, res) => {
+    getCoinsInRange_f(req, res, 7, true, false, '', req.params.skip, req.params.limit);
+}
+
+var getAllCoins_chart7days_Offset = (req, res) => {
+    getCoinsInRange_f(req, res, 7, true, true, '7days', req.params.skip, req.params.limit);
+}
+
+var getAllCoins_Offset = (req, res) => {
+    getCoinsInRange_f(req, res, 7, true, true, '', req.params.skip, req.params.limit);
+}
 
 //RESTful
 //POST
@@ -78,7 +89,11 @@ router.get('/', getAllCoins);
 router.get('/:coinunits/:timerange', getCoinsInRange);
 router.get('/:coinunits', getCoins);
 
+router.get('/nonchart/offset/:skip/:limit', getAllCoins_NonChart_Offset);
 
+router.get('/chart7days/offset/:skip/:limit', getAllCoins_chart7days_Offset);
+
+router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 
 //PUT
@@ -132,7 +147,9 @@ function updateCoinField(req, res, data) {
     })
 }
 
-function getCoinsInRange_f (req, res, range, all, chart, typeChart) {
+
+function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0) {
+    console.time("t_all_function");
     var cunits = all===false? req.params.coinunits.split('|'): "";
     var Coin = db.Coin;
     var matchStage;
@@ -161,7 +178,17 @@ function getCoinsInRange_f (req, res, range, all, chart, typeChart) {
         };
         pipeline.push(matchStage);
     }
+    limit = parseInt(limit);
+    if (limit > 0) {
+        skip = parseInt(skip);
+        pipeline.push( {$skip: skip});
+        pipeline.push( {$limit: limit});
+    }
     pipeline.push(projectStage);
+
+    //time
+    console.time("mongodb");
+
     Coin.aggregate(pipeline, (err, coin) => {
             if (err) {
                 res.status(422);
@@ -198,7 +225,7 @@ function getCoinsInRange_f (req, res, range, all, chart, typeChart) {
                     }
 
 
-
+                    
                     for (i=firstIndex;i<jsonValues.length;i++ ) {
                         var change1h_Percent = parseFloat((jsonValues[i].price - jsonValues[i-1].price)*100/jsonValues[i].price).toFixed(2);
                         var change24h_I = jsonValues.findIndex( values => {
@@ -223,6 +250,7 @@ function getCoinsInRange_f (req, res, range, all, chart, typeChart) {
                         }
 
                     }
+                    
                     arrayCoinsFinal.push( {
                         name: coindata.name,
                         symbol: coindata.symbol,
@@ -247,8 +275,8 @@ function getCoinsInRange_f (req, res, range, all, chart, typeChart) {
                 res.json(jsonFinal);
                 }
         });
-
-
+        console.timeEnd("mongodb");
+        console.timeEnd("t_all_function");
 }
 
 

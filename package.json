@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "node app.js"
+    "start": "node app.js"
   },
   "author": "D14CQCP01 CryWS Team",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "body-parser": "^1.18.2",
     "cron": "^1.3.0",
     "express": "^4.16.3",
+    "jimp": "^0.2.28",
     "json-library": "^2.0.4",
     "jwt-simple": "^0.5.1",
     "mongoose": "^5.0.11",
@@ -23,5 +24,4 @@
     "pixel-bmp": "0.0.1",
     "pixel-png": "0.0.1"
   }
-  
 }

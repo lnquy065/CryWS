@@ -1,29 +1,50 @@
 var pixelBitmap= require('pixel-bmp');
+var Jimp = require('jimp');
+const fs = require('fs');
+const path = require('path');
 
-var file= 'res/coins_mono/BTC.bmp';
+fs.readdir(__dirname+"/res/coins/", (err, files) => {
+    var count = files.length;
+    var cur = 0;
+    files.forEach(file => {
+        cur+=1;
+        console.log(cur+'/'+count);
+        Jimp.read(__dirname+"/res/coins/"+file, function(err, img) {
+            if (err) ;
+            else {
+                var pathf = __dirname+"/res/coins/"+file;
+            var fname = path.basename(pathf, path.extname(pathf));
+            img.grayscale().contrast(1).write('res/coins_mono/'+fname+'.bmp');
+            }
+        })
+    })
+})
+
+//var file= 'res/coins/BTC.png';
 
 
-pixelBitmap.parse(file).then(function(images){
-    var imageData = images[0];
-    var threshold = 40;
-    var rs = [];
-    for (i=0; i<(16*16*4);i=i+32) {
-         var byte = [];
-        for (j = i;j<i+32;j=j+4) {
-            var gray = imageData.data[j];
-            if (gray > threshold) gray=0;
-            else gray=1;
-            byte.push(gray);
-        }
-         rs.push(toByte(byte));
-    }
-    var toArr = '{';
-    for (l=0;l<rs.length;l++) {
-        toArr+= rs[l] +',';
-    }
-    toArr = toArr.slice(0, -1) + '};'
-    console.log(toArr);
-  });
+
+// pixelBitmap.parse(file).then(function(images){
+//     var imageData = images[0];
+//     var threshold = 40;
+//     var rs = [];
+//     for (i=0; i<(16*16*4);i=i+32) {
+//          var byte = [];
+//         for (j = i;j<i+32;j=j+4) {
+//             var gray = imageData.data[j];
+//             if (gray > threshold) gray=0;
+//             else gray=1;
+//             byte.push(gray);
+//         }
+//          rs.push(toByte(byte));
+//     }
+//     var toArr = '{';
+//     for (l=0;l<rs.length;l++) {
+//         toArr+= rs[l] +',';
+//     }
+//     toArr = toArr.slice(0, -1) + '};'
+//     console.log(toArr);
+//   });
 
 // pixelPng.parse(file).then(function(images){
 //   var i= 0;
