@@ -244,7 +244,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         
                         itemAll_values.push( {
                             timeStamp: jsonValues[last_index].timeStamp,
-                            price: jsonValues[last_index].price,
+                            price: String(jsonValues[last_index].price).substring(0, 9),
                             marketcap: jsonValues[last_index].marketcap,
                             volume24: jsonValues[last_index].volume24,
                             change_1h: change1h_Percent,
@@ -264,7 +264,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         var iDate =  timeStamp.toTime(jsonValues[i].timeStamp);
                         var values = {
                             timeStamp: jsonValues[i].timeStamp,
-                            price: jsonValues[i].price,
+                            price: String(jsonValues[i].price).substring(0,9),
                             marketcap: jsonValues[i].marketcap,
                             volume24: jsonValues[i].volume24,
                             change_1h: change1h_Percent,
