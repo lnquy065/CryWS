@@ -73,6 +73,11 @@ var getAllCoins_Offset = (req, res) => {
     getCoinsInRange_f(req, res, 7, true, true, '', req.params.skip, req.params.limit);
 }
 
+
+var getAllCoins_Tiny_Offset = (req, res) => {
+    getCoinsInRange_f(req, res, 7, true, false, '', req.params.skip, req.params.limit, true);
+}
+
 //RESTful
 //POST
 router.post('/', auth.Admin, createCoin);   //token admin
@@ -96,6 +101,7 @@ router.get('/chart7days/offset/:skip/:limit', getAllCoins_chart7days_Offset);
 router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 
+router.get('/tiny/offset/:skip/:limit', getAllCoins_Tiny_Offset);
 
 
 //PUT
@@ -150,7 +156,7 @@ function updateCoinField(req, res, data) {
 }
 
 
-function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0) {
+function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0, tiny=false) {
     console.time("t_all_function");
     var cunits = all===false? req.params.coinunits.split('|'): "";
     var Coin = db.Coin;
@@ -260,16 +266,29 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         }
 
                     }
-                    
-                    arrayCoinsFinal.push( {
-                        name: coindata.name,
-                        symbol: coindata.symbol,
-                        available_supply: coindata.available_supply,
-                        last_values: itemAll_values[itemAll_values.length-1],
-                        max7days_values: arrayValuesMaxFinal,
-                        all_values: itemAll_values
-                    })
-                    if (chart===false) {
+
+                    if (tiny === true) {
+                        arrayCoinsFinal.push({
+                            nm: coindata.name,
+                            sb: coindata.symbol,
+                            as: coindata.available_supply,
+                            pr: itemAll_values[itemAll_values.length-1]['price'],
+                            c01: itemAll_values[itemAll_values.length-1]['change_1h'],
+                            c24: itemAll_values[itemAll_values.length-1]['change_24h'],
+                        })
+
+                    } else {
+                        arrayCoinsFinal.push( {
+                            name: coindata.name,
+                            symbol: coindata.symbol,
+                            available_supply: coindata.available_supply,
+                            last_values: itemAll_values[itemAll_values.length-1],
+                            max7days_values: arrayValuesMaxFinal,
+                            all_values: itemAll_values
+                        })
+                }
+
+                    if (chart===false && tiny===false) {
                         delete arrayCoinsFinal[coin_index].all_values;
                         delete arrayCoinsFinal[coin_index].max7days_values;
                     } else {

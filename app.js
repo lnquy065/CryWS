@@ -5,11 +5,15 @@ var morgan = require('morgan');
 var router = require('./apis'); //apis
 var config = require('./config');   //configs
 
+var compression = require('compression');
 
 //server init
 var app = express();
 
+
+
 //middleware    
+app.use(compression());
     //--body-parser: xu ly json, text, ma hoa url
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended: true}));
@@ -23,8 +27,6 @@ app.use('/res/coins_mono', express.static('res/coins_mono'));
 
     //--routing: dinh tuyen
 app.use('/', router);
-
-
 
 
 //start server
