@@ -78,12 +78,21 @@ var getAllCoins_Tiny_Offset = (req, res) => {
     getCoinsInRange_f(req, res, 7, true, false, '', req.params.skip, req.params.limit, true);
 }
 
+var getAllCoins_Tiny = (req, res) => {
+    getCoinsInRange_f(req, res, 7, true, false, '', 0, 0, true);
+}
+
+
+
+
 //RESTful
 //POST
 router.post('/', auth.Admin, createCoin);   //token admin
 router.post('/values', auth.Admin, createCoinValues);   //token admin
 
 //GET
+router.get('/tiny/', getAllCoins_Tiny);
+
 router.get('/nonchart/', getAllCoins_NonChart);
 router.get('/nonchart/:coinunits', getCoins_NonChart);
 
@@ -101,7 +110,10 @@ router.get('/chart7days/offset/:skip/:limit', getAllCoins_chart7days_Offset);
 router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 
+
 router.get('/tiny/offset/:skip/:limit', getAllCoins_Tiny_Offset);
+
+
 
 
 //PUT
