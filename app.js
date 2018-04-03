@@ -19,6 +19,7 @@ app.use(morgan('dev'));
 
     //--public resource
 app.use('/res/coins', express.static('res/coins'));
+app.use('/res/coins_mono', express.static('res/coins_mono'));
 
     //--routing: dinh tuyen
 app.use('/', router);
