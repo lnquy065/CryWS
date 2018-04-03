@@ -96,6 +96,8 @@ router.get('/chart7days/offset/:skip/:limit', getAllCoins_chart7days_Offset);
 router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 
+
+
 //PUT
 router.put('/name/:unit/:name', auth.Admin, function(req, res) {  //token admin
     var name = req.params.name;
@@ -214,6 +216,14 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     if (chart===false) {
                         firstIndex = jsonValues.length;
                         last_index = jsonValues.length - 1;
+
+                        var change1h_Percent = parseFloat((jsonValues[last_index].price - jsonValues[last_index-1].price)*100/jsonValues[last_index].price).toFixed(2);
+                        var change24h_I = jsonValues.findIndex( values => {
+                            return values.timeStamp < jsonValues[last_index].timeStamp-timeStamp.day(1);
+                        });
+                        var change24h = change24h_I === -1? jsonValues[last_index].price: jsonValues[change24h_I].price;
+                        var change24_Percent = parseFloat((jsonValues[last_index].price - change24h)*100/change24h).toFixed(2);
+                        
                         itemAll_values.push( {
                             timeStamp: jsonValues[last_index].timeStamp,
                             price: jsonValues[last_index].price,
