@@ -205,6 +205,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
         pipeline.push( {$limit: limit});
     }
     pipeline.push(projectStage);
+    pipeline.push( {$sort: {_id: 1}});
 
     //time
     console.time("mongodb");

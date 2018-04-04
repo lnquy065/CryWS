@@ -23,6 +23,7 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pixel-bmp": "0.0.1",
-    "pixel-png": "0.0.1"
+    "pixel-png": "0.0.1",
+    "sort-json-array": "^0.1.7"
   }
 }

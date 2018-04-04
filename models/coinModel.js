@@ -11,8 +11,8 @@ var coinSchema = new Schema({
     values: [
         {
                         _id: String,
-                        marketcap: String,
-                        price: String,
+                        marketcap: Number,
+                        price: Number,
                         volume24: String,
                         timeStamp: String
         }
