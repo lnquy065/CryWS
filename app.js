@@ -102,8 +102,8 @@ function updateItemDB(jObj) {
                     $addToSet: {
                         values: {
                             _id: jObj.last_updated,
-                            marketcap: jObj.market_cap_usd,
-                            price: jObj.price_usd,
+                            marketcap: parseFloat(jObj.market_cap_usd),
+                            price: parseFloat(jObj.price_usd),
                             volume24: jObj['24h_volume_usd'],
                             timeStamp: jObj.last_updated
                         }
