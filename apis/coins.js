@@ -284,7 +284,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         arrayCoinsFinal.push({
                             nm: coindata.name,
                             sb: coindata.symbol,
-                            as: coindata.available_supply,
+                            mc: itemAll_values[itemAll_values.length-1]['marketcap'],
                             pr: itemAll_values[itemAll_values.length-1]['price'],
                             c01: itemAll_values[itemAll_values.length-1]['change_1h'],
                             c24: itemAll_values[itemAll_values.length-1]['change_24h'],
