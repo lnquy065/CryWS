@@ -27,6 +27,7 @@ var getInformation = (req, res) => {
 var getFavorites = (req, res) => {
     var username = req.user.username;
     var Account = db.Account;
+    console.log(username);
     if (username!==req.user.username) {
         res.status(401);
         res.json({success: false});
@@ -38,10 +39,10 @@ var getFavorites = (req, res) => {
             res.json({success: false});
         } else {
             var json = JSON.parse(JSON.stringify(acc));
-            delete json.username;
-            delete json.password;
-            delete json.rule;
-            delete json._id;
+            // delete json.username;
+            // delete json.password;
+            // delete json.rule;
+            // delete json._id;
             res.send(json);
         }
     })
