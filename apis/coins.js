@@ -244,8 +244,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         var change24_Percent = parseFloat((jsonValues[last_index].price - change24h)*100/change24h).toFixed(2);
                         
                         itemAll_values.push( {
-                            timeStamp: jsonValues[last_index].timeStamp,
-                            price: String(jsonValues[last_index].price).substring(0, 9),
+                            timeStamp: parseInt(jsonValues[last_index].timeStamp),
+                            price: jsonValues[last_index].price,
                             marketcap: jsonValues[last_index].marketcap,
                             volume24: jsonValues[last_index].volume24,
                             change_1h: change1h_Percent,
@@ -264,8 +264,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         var change24_Percent = parseFloat((jsonValues[i].price - change24h)*100/change24h).toFixed(2);
                         var iDate =  timeStamp.toTime(jsonValues[i].timeStamp);
                         var values = {
-                            timeStamp: jsonValues[i].timeStamp,
-                            price: String(jsonValues[i].price).substring(0,9),
+                            timeStamp: parseInt(jsonValues[i].timeStamp),
+                            price: jsonValues[i].price,
                             marketcap: jsonValues[i].marketcap,
                             volume24: jsonValues[i].volume24,
                             change_1h: change1h_Percent,
