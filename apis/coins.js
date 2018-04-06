@@ -82,6 +82,10 @@ var getAllCoins_Tiny = (req, res) => {
     getCoinsInRange_f(req, res, 7, true, false, '', 0, 0, true);
 }
 
+var getCoins_Tiny = (req, res) => {
+    getCoinsInRange_f(req, res, 7, false, false, '', 0, 0, true);
+ }
+
 
 
 
@@ -92,9 +96,12 @@ router.post('/values', auth.Admin, createCoinValues);   //token admin
 
 //GET
 router.get('/tiny/', getAllCoins_Tiny);
+router.get('/tiny/:coinunits', getCoins_Tiny);
 
 router.get('/nonchart/', getAllCoins_NonChart);
 router.get('/nonchart/:coinunits', getCoins_NonChart);
+
+
 
 router.get('/chart7days/', getAllCoins_chart7days);
 router.get('/chart7days/:coinunits', getCoins_chart7days);
@@ -193,9 +200,19 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
 
 
     if (all===false) {
-        matchStage = {
-            $match: {symbol: {$in: cunits}}
-        };
+        if (cunits[0]==='fbyname') {
+            matchStage = {
+                $match: {name: {$regex: cunits[1]}}
+            };
+        } else if (cunits[0]==='fbysymbol') {
+            matchStage = {
+                $match: {symbol: {$regex: cunits[1]}}
+            };
+        } else {
+            matchStage = {
+                $match: {symbol: {$in: cunits}}
+            };
+        }
         pipeline.push(matchStage);
     }
     limit = parseInt(limit);
