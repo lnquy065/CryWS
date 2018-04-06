@@ -202,11 +202,11 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
     if (all===false) {
         if (cunits[0]==='fbyname') {
             matchStage = {
-                $match: {name: {$regex: cunits[1]}}
+                $match: {name: {$regex: cunits[1], $options: 'i'}}
             };
         } else if (cunits[0]==='fbysymbol') {
             matchStage = {
-                $match: {symbol: {$regex: cunits[1]}}
+                $match: {symbol: {$regex: cunits[1], $options: 'i'}}
             };
         } else {
             matchStage = {
