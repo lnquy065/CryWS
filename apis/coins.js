@@ -79,6 +79,7 @@ var getAllCoins_Tiny_Offset = (req, res) => {
 }
 
 var getAllCoins_Tiny = (req, res) => {
+    
     getCoinsInRange_f(req, res, 7, true, false, '', 0, 0, true);
 }
 
@@ -215,6 +216,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
         }
         pipeline.push(matchStage);
     }
+    pipeline.push( {$sort: {_id: 1}});
     limit = parseInt(limit);
     if (limit > 0) {
         skip = parseInt(skip);
@@ -222,7 +224,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
         pipeline.push( {$limit: limit});
     }
     pipeline.push(projectStage);
-    pipeline.push( {$sort: {_id: 1}});
+    
 
     //time
     console.time("mongodb");
