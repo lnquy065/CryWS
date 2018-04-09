@@ -269,9 +269,10 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
 
                         var change1h_Percent = parseFloat((jsonValues[last_index].price - jsonValues[last_index-1].price)*100/jsonValues[last_index].price).toFixed(2);
                         var change24h_I = jsonValues.findIndex( values => {
-                            return values.timeStamp < jsonValues[last_index].timeStamp-timeStamp.day(1);
-                        });
-                        var change24h = change24h_I === -1? jsonValues[last_index].price: jsonValues[change24h_I].price;
+                           
+                            return values.timeStamp > jsonValues[last_index].timeStamp-timeStamp.day(1);
+                        })-1;
+                        var change24h = change24h_I < 0? jsonValues[last_index].price: jsonValues[change24h_I].price;
                         var change24_Percent = parseFloat((jsonValues[last_index].price - change24h)*100/change24h).toFixed(2);
                         
                         itemAll_values.push( {
@@ -290,8 +291,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         var change1h_Percent = parseFloat((jsonValues[i].price - jsonValues[i-1].price)*100/jsonValues[i].price).toFixed(2);
                         var change24h_I = jsonValues.findIndex( values => {
                                     return values.timeStamp < jsonValues[i].timeStamp-timeStamp.day(1);
-                        });
-                        var change24h = change24h_I === -1? jsonValues[i].price: jsonValues[change24h_I].price;
+                        })-1;
+                        var change24h = change24h_I < 0? jsonValues[i].price: jsonValues[change24h_I].price;
                         var change24_Percent = parseFloat((jsonValues[i].price - change24h)*100/change24h).toFixed(2);
                         var iDate =  timeStamp.toPrev(timeStamp.toDate(jsonValues[i].timeStamp));
                         var values = {
