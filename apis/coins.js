@@ -337,11 +337,12 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
 
                     if (chart===false && tiny===false) {
                         delete arrayCoinsFinal[coin_index].all_values;
-                        delete arrayCoinsFinal[coin_index].max7days_values;
+                       // delete arrayCoinsFinal[coin_index].max7days_values;
                     } else {
                         switch (typeChart) {
                             case '7days': 
-
+                                delete arrayCoinsFinal[coin_index].max7days_values;
+                                delete arrayCoinsFinal[coin_index].last_values;
                                 delete arrayCoinsFinal[coin_index].all_values;
                                 break;
                         }
