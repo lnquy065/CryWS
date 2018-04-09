@@ -27,6 +27,19 @@ timeStamp.currentAt0h = () => {
     return Math.round(+new Date()/1000);
 }
 
+timeStamp.currentDate = () => {
+    var a = new Date();
+    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return year+'/'+month+'/'+timeStamp.padding(date, 2);
+}
+
 timeStamp.getDateFromCurrent = (offset) => {
     var date = new Date();
     date.setDate (date.getDate() - offset);  
@@ -41,7 +54,7 @@ timeStamp.get7DaysPrevious = () => {
     return arr;
 }
 
-timeStamp.toTime = (UNIX_timestamp) =>{
+timeStamp.toDate = (UNIX_timestamp) =>{
   var a = new Date(UNIX_timestamp * 1000);
   var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
   var year = a.getFullYear();
@@ -54,6 +67,11 @@ timeStamp.toTime = (UNIX_timestamp) =>{
   return year+'/'+month+'/'+timeStamp.padding(date, 2);
 }
 
+timeStamp.toPrev = (date) => {
+    var cur = timeStamp.currentDate();
+    var offset = Math.abs(new Date(cur) - new Date(date))/1000/60/60/24;
+    return 'prev'+offset;
+}
 
 timeStamp.padding = (input, padding) => {
     input = String(input);

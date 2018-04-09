@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../models');
 var auth = require('../auth');
 var timeStamp = require('../qmodules/timeStamp');
+var bmpEncode = require('../qmodules/bmpEncode');
 
 //Objects
 var createCoin = (req, res) => {
@@ -78,6 +79,10 @@ var getAllCoins_Tiny_Offset = (req, res) => {
     getCoinsInRange_f(req, res, 7, true, false, '', req.params.skip, req.params.limit, true);
 }
 
+var getAllCoins_TinyIcon_Offset = (req, res) => {
+    getCoinsInRange_f(req, res, 7, true, false, '', req.params.skip, req.params.limit, true, true);
+}
+
 var getAllCoins_Tiny = (req, res) => {
     
     getCoinsInRange_f(req, res, 7, true, false, '', 0, 0, true);
@@ -88,14 +93,13 @@ var getCoins_Tiny = (req, res) => {
  }
 
 
-
-
 //RESTful
 //POST
 router.post('/', auth.Admin, createCoin);   //token admin
 router.post('/values', auth.Admin, createCoinValues);   //token admin
 
 //GET
+
 router.get('/tiny/', getAllCoins_Tiny);
 router.get('/tiny/:coinunits', getCoins_Tiny);
 
@@ -120,7 +124,7 @@ router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 
 router.get('/tiny/offset/:skip/:limit', getAllCoins_Tiny_Offset);
-
+router.get('/tinyicon/offset/:skip/:limit', getAllCoins_TinyIcon_Offset);
 
 
 
@@ -176,7 +180,8 @@ function updateCoinField(req, res, data) {
 }
 
 
-function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0, tiny=false) {
+function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0, tiny=false, icon=false) {
+    console.log((timeStamp.current()-timeStamp.day(range+1)));
     console.time("t_all_function");
     var cunits = all===false? req.params.coinunits.split('|'): "";
     var Coin = db.Coin;
@@ -250,6 +255,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     var firstIndex = 1;
                     
                     var itemAll_values  = [];
+                    var arrayValuesMax_Temp = {};
                     var arrayValuesMaxFinal = {};
                     if (chart===false) {
                         firstIndex = jsonValues.length;
@@ -281,7 +287,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         });
                         var change24h = change24h_I === -1? jsonValues[i].price: jsonValues[change24h_I].price;
                         var change24_Percent = parseFloat((jsonValues[i].price - change24h)*100/change24h).toFixed(2);
-                        var iDate =  timeStamp.toTime(jsonValues[i].timeStamp);
+                        var iDate =  timeStamp.toPrev(timeStamp.toDate(jsonValues[i].timeStamp));
                         var values = {
                             timeStamp: parseInt(jsonValues[i].timeStamp),
                             price: jsonValues[i].price,
@@ -292,30 +298,39 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         }
                        
                         itemAll_values.push(values);
-                        if (arrayValuesMaxFinal[iDate]===undefined || parseFloat(arrayValuesMaxFinal[iDate].price) < parseFloat(jsonValues[i].price)) {
-                            delete values.change_1h;
-                            arrayValuesMaxFinal[iDate] = values;
+                        if (typeChart==='7days') {
+                            if (arrayValuesMax_Temp[iDate]===undefined || parseFloat(arrayValuesMax_Temp[iDate].price) < parseFloat(jsonValues[i].price)) {
+                                delete values.change_1h;
+                                arrayValuesMax_Temp[iDate] = values;
+                            }
                         }
+                        
 
                     }
 
                     if (tiny === true) {
-                        arrayCoinsFinal.push({
+                        var img = [];
+                        if ( icon===true) {
+                            img = bmpEncode(coindata.symbol);
+                        }
+                        var tnItem = {
                             nm: coindata.name,
                             sb: coindata.symbol,
+                            ic: img,
                             mc: itemAll_values[itemAll_values.length-1]['marketcap'],
                             pr: itemAll_values[itemAll_values.length-1]['price'],
                             c01: itemAll_values[itemAll_values.length-1]['change_1h'],
                             c24: itemAll_values[itemAll_values.length-1]['change_24h'],
-                        })
-
+                        }
+                        if ( icon===false) {delete tnItem.ic};
+                        arrayCoinsFinal.push(tnItem);
                     } else {
                         arrayCoinsFinal.push( {
                             name: coindata.name,
                             symbol: coindata.symbol,
                             available_supply: coindata.available_supply,
                             last_values: itemAll_values[itemAll_values.length-1],
-                            max7days_values: arrayValuesMaxFinal,
+                            max7days_values: arrayValuesMax_Temp,
                             all_values: itemAll_values
                         })
                 }
@@ -326,6 +341,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     } else {
                         switch (typeChart) {
                             case '7days': 
+
                                 delete arrayCoinsFinal[coin_index].all_values;
                                 break;
                         }
