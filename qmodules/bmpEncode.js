@@ -1,5 +1,4 @@
-var pixelBitmap= require('pixel-bmp');
-// var Jimp = require('jimp');
+var bmp = require("bmp-js");
  const fs = require('fs');
 // const path = require('path');
 
@@ -21,24 +20,19 @@ var pixelBitmap= require('pixel-bmp');
 // })
 
 
-
-var toArray = (coinsymbol) => {
+var toArray = function (coinsymbol) {
     var file= __dirname+'/../res/coins_high/16/blackbmp/'+coinsymbol+'.bmp';
     if (!fs.existsSync(file)) file = __dirname+'/../res/coins_high/16/blackbmp/none.bmp';
-
-    var getRet = (v) => {
-        console.log(v);
-        return v;
-    }
-
-    var imageData = pixelBitmap.parse(file).then(function(images, getRet){
-        var imageData = images[0];
-        var threshold = 40;
-        var rs = [];
+    
+    var bmpBuffer = fs.readFileSync(file);
+    var bmpData = bmp.decode(bmpBuffer);
+    var imageData = bmpData.data.toJSON().data;
+    var threshold = 100;
+    var rs = [];
         for (i=0; i<(16*16*4);i=i+32) {
              var byte = [];
             for (j = i;j<i+32;j=j+4) {
-                var gray = imageData.data[j];
+                var gray = imageData[j];
                 if (gray > threshold) gray=0;
                 else gray=1;
                 byte.push(gray);
@@ -46,11 +40,7 @@ var toArray = (coinsymbol) => {
              rs.push(toByte(byte));
            
         }
-        getRet(rs);
-        return rs;
-      });
-     
-  //  return rs;
+    return rs;
 }
 
 
@@ -63,5 +53,7 @@ function toByte(arr) {
     }
     return rsB;
 }
+
+
 
 module.exports = toArray;
