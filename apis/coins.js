@@ -25,7 +25,7 @@ var createCoinValues = (req, res) => {
 
     Coin.findOneAndUpdate({unit: json.unit}, {$push: {values: json.values}}, (err,odoc)=> {
         if (err) {
-            console.error(err);
+          //  console.error(err);
             res.send(err);
         } else {
              res.send('success');
@@ -258,8 +258,14 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     var arrayValuesMax_Temp = {};
                     var arrayValuesMaxFinal = {};
                     if (chart===false) {
+                        
                         firstIndex = jsonValues.length;
                         last_index = jsonValues.length - 1;
+
+                        if (jsonValues[last_index] === undefined) {
+                           // console.log("next");
+                            continue;
+                        }
 
                         var change1h_Percent = parseFloat((jsonValues[last_index].price - jsonValues[last_index-1].price)*100/jsonValues[last_index].price).toFixed(2);
                         var change24h_I = jsonValues.findIndex( values => {
@@ -334,14 +340,18 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             all_values: itemAll_values
                         })
                 }
-
-                    if (chart===false && tiny===false) {
+                   // console.log(chart+' '+tiny);
+                    if (chart===false && tiny===false) {        // coins/nonchart
+                        if (arrayCoinsFinal[coin_index]!== undefined) {
                         delete arrayCoinsFinal[coin_index].all_values;
-                       // delete arrayCoinsFinal[coin_index].max7days_values;
+                       delete arrayCoinsFinal[coin_index].max7days_values;
+                        }
+                    } else if (chart===true && tiny===true) {  // coins/
+                        delete arrayCoinsFinal[coin_index].max7days_values; 
                     } else {
                         switch (typeChart) {
                             case '7days': 
-                                delete arrayCoinsFinal[coin_index].max7days_values;
+                                delete arrayCoinsFinal[coin_index].max7days_values.prev7;
                                 delete arrayCoinsFinal[coin_index].last_values;
                                 delete arrayCoinsFinal[coin_index].all_values;
                                 break;
@@ -353,8 +363,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                 res.json(jsonFinal);
                 }
         });
-        console.timeEnd("mongodb");
-        console.timeEnd("t_all_function");
+       // console.timeEnd("mongodb");
+       // console.timeEnd("t_all_function");
 }
 
 
