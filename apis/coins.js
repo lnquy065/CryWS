@@ -181,12 +181,13 @@ function updateCoinField(req, res, data) {
 
 
 function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0, tiny=false, icon=false) {
-    console.log((timeStamp.current()-timeStamp.day(range+1)));
-    console.time("t_all_function");
-    var cunits = all===false? req.params.coinunits.split('|'): "";
+    var cunits = all===false? req.params.coinunits.split('|'): "";  //get coins array that splited from req.
     var Coin = db.Coin;
     var matchStage;
     var date = new Date();
+
+
+    //built Aggregation PipeLine
     var pipeline = new Array();
     var projectStage = {
         $project: {
@@ -197,14 +198,11 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                 $filter: {
                     input: '$values',
                     as: 'item',
-                    cond: {$gte: ['$$item.timeStamp', (timeStamp.current()-timeStamp.day(range+1))]}
+                    cond: {$gte: ['$$item.timeStamp', (timeStamp.current()-timeStamp.day(range+1))]}    //get values 8days ago
                 }
             }
         }
     }
-    var daysTimeStamp = [];
-
-
     if (all===false) {
         if (cunits[0]==='fbyname') {
             matchStage = {
@@ -231,9 +229,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
     pipeline.push(projectStage);
     
 
-    //time
-    console.time("mongodb");
-
+    //Run Mongodb
     Coin.aggregate(pipeline, (err, coin) => {
             if (err) {
                 res.status(422);
@@ -261,7 +257,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         
                         firstIndex = jsonValues.length;
                         last_index = jsonValues.length - 1;
-
+ 
                         if (jsonValues[last_index] === undefined) {
                            // console.log("next");
                             continue;
