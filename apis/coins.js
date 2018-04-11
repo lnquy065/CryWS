@@ -186,7 +186,7 @@ function updateCoinField(req, res, data) {
 
 function mapChart(v, max1, min1, max2, min2) {
     var ratio = (max1 - min1)/(max2 - min2);
-    return parseInt((v - min1) / ratio);
+    return v+' '+((v - min1) / ratio)+' '+parseInt(((v - min1) / ratio));
 }
 
 
@@ -380,6 +380,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             delete arrayCoinsFinal[coin_index].mc;
                             delete arrayCoinsFinal[coin_index].c01;
                             delete arrayCoinsFinal[coin_index].c24;
+                            console.log(arrayCoinsFinal[coin_index].max7days_values);
+                            console.log(max7Day+' '+min7Day);
                             var mChart = [];
                             mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev7.price, max7Day, min7Day, 48, 0));
                             mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev6.price, max7Day, min7Day, 48, 0));
