@@ -381,14 +381,14 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             delete arrayCoinsFinal[coin_index].c01;
                             delete arrayCoinsFinal[coin_index].c24;
                             var mChart = [];
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev7.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev6.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev5.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev4.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev3.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev2.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev1.price, max7Day, min7Day, 100, 0));
-                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev0.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev7.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev6.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev5.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev4.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev3.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev2.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev1.price, max7Day, min7Day, 48, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev0.price, max7Day, min7Day, 48, 0));
                             delete arrayCoinsFinal[coin_index].max7days_values; 
                             arrayCoinsFinal[coin_index].c7 = mChart;
                         }
