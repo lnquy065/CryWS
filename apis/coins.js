@@ -323,7 +323,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
 
                         //Nếu lấy dữ liệu 7 ngày -> Tìm max mỗi ngày lưu vào max7daysChartValue_pre
                         if (typeChart==='7days') {
-                            if (max7daysChartValue_pre[iDate]===undefined || parseFloat(max7daysChartValue_pre[iDate].price) < parseFloat(jsonValues[i].price) && values.timeStamp>= timeStamp.current()-timeStamp.day(7)) {
+                            if (max7daysChartValue_pre[iDate]===undefined || parseFloat(max7daysChartValue_pre[iDate].price) < parseFloat(jsonValues[i].price) && values.timeStamp>= timeStamp.current()-timeStamp.day(6)) {
                                 //delete values.change_1h;
                                 var tmp_price = parseFloat(values.price);
                                 if (tmp_price > max7Day) max7Day = tmp_price;
