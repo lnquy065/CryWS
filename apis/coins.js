@@ -186,7 +186,7 @@ function updateCoinField(req, res, data) {
 
 function mapChart(v, max1, min1, max2, min2) {
     var ratio = (max1 - min1)/(max2 - min2);
-    return v+' '+((v - min1) / ratio)+' '+parseInt(((v - min1) / ratio));
+    return v+' '+ratio+' '+parseInt(((v - min1) / ratio));
 }
 
 
