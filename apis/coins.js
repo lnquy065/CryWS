@@ -91,7 +91,9 @@ var getAllCoins_Tiny = (req, res) => {
 var getCoins_Tiny = (req, res) => {
     getCoinsInRange_f(req, res, 7, false, false, '', 0, 0, true);
  }
-
+ var getCoins_Tiny_Chart7days = (req, res) =>{
+    getCoinsInRange_f(req, res, 7, false, true, '7days', 0,0, true, true);
+ }
 
 //RESTful
 //POST
@@ -106,6 +108,7 @@ router.get('/tiny/:coinunits', getCoins_Tiny);
 router.get('/nonchart/', getAllCoins_NonChart);
 router.get('/nonchart/:coinunits', getCoins_NonChart);
 
+router.get('/tinychart7days/:coinunits', getCoins_Tiny_Chart7days);
 
 
 router.get('/chart7days/', getAllCoins_chart7days);
@@ -124,6 +127,7 @@ router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 
 router.get('/tiny/offset/:skip/:limit', getAllCoins_Tiny_Offset);
+
 router.get('/tinyicon/offset/:skip/:limit', getAllCoins_TinyIcon_Offset);
 
 
@@ -178,6 +182,14 @@ function updateCoinField(req, res, data) {
         }
     })
 }
+
+
+function mapChart(v, max1, min1, max2, min2) {
+    var ratio = (max1 - min1)/(max2 - min2);
+    return parseInt((v - min1) / ratio);
+}
+
+
 
 
 function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='', skip=0, limit=0, tiny=false, icon=false) {
@@ -238,6 +250,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
             if (coin) {
                 var arrayCoinsFinal = [];
                 
+                //Duyet danh sach tung Coin
                 for (coin_index=0;coin_index<coin.length;coin_index++) {
                     var jsonValues = {};
                     var jsonFinal = {};
@@ -250,10 +263,15 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     // firstIndex = firstIndex === -1? firstIndex = jsonValues.length: firstIndex;
                     var firstIndex = 1;
                     
-                    var itemAll_values  = [];
-                    var arrayValuesMax_Temp = {};
-                    var arrayValuesMaxFinal = {};
-                    if (chart===false) {
+                    var hourlyValues_pre  = [];
+                    var max7daysChartValue_pre = {};
+                    var max7daysChart_final = {};
+
+                    var max7Day = 0;
+                    var min7Day = 999999;
+                    
+                    //Nonchart -> ko lấy dữ liệu hằng giờ chỉ lấy dữ liệu cuối
+                    if (chart===false) { //-> Lấy dữ liệu cuối
                         
                         firstIndex = jsonValues.length;
                         last_index = jsonValues.length - 1;
@@ -271,7 +289,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         var change24h = change24h_I < 0? jsonValues[last_index].price: jsonValues[change24h_I].price;
                         var change24_Percent = parseFloat((jsonValues[last_index].price - change24h)*100/change24h).toFixed(2);
                         
-                        itemAll_values.push( {
+                        hourlyValues_pre.push( {
                             timeStamp: parseInt(jsonValues[last_index].timeStamp),
                             price: jsonValues[last_index].price,
                             marketcap: jsonValues[last_index].marketcap,
@@ -281,8 +299,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         })
                     }
 
-
-                    
+                    //Duyệt dữ liệu hằng giờ
                     for (i=firstIndex;i<jsonValues.length;i++ ) {
                         var change1h_Percent = parseFloat((jsonValues[i].price - jsonValues[i-1].price)*100/jsonValues[i].price).toFixed(2);
                         var change24h_I = jsonValues.findIndex( values => {
@@ -291,6 +308,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                         var change24h = change24h_I < 0? jsonValues[i].price: jsonValues[change24h_I].price;
                         var change24_Percent = parseFloat((jsonValues[i].price - change24h)*100/change24h).toFixed(2);
                         var iDate =  timeStamp.toPrev(timeStamp.toDate(jsonValues[i].timeStamp));
+
+                        //values: Thêm dữ liệu từng giờ vào mảng hourly
                         var values = {
                             timeStamp: parseInt(jsonValues[i].timeStamp),
                             price: jsonValues[i].price,
@@ -299,53 +318,81 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             change_1h: change1h_Percent,
                             change_24h: change24_Percent
                         }
-                       
-                        itemAll_values.push(values);
+                        hourlyValues_pre.push(values);
+
+                        //Nếu lấy dữ liệu 7 ngày -> Tìm max mỗi ngày lưu vào max7daysChartValue_pre
                         if (typeChart==='7days') {
-                            if (arrayValuesMax_Temp[iDate]===undefined || parseFloat(arrayValuesMax_Temp[iDate].price) < parseFloat(jsonValues[i].price)) {
-                                delete values.change_1h;
-                                arrayValuesMax_Temp[iDate] = values;
+                            if (max7daysChartValue_pre[iDate]===undefined || parseFloat(max7daysChartValue_pre[iDate].price) < parseFloat(jsonValues[i].price)) {
+                                //delete values.change_1h;
+                                var tmp_price = parseFloat(values.price);
+                                if (tmp_price > max7Day) max7Day = tmp_price;
+                                if (tmp_price < min7Day) min7Day = tmp_price;
+                                max7daysChartValue_pre[iDate] = values;
                             }
                         }
-                        
-
                     }
 
-                    if (tiny === true) {
-                        var img = [];
-                        if ( icon===true) {
-                            img = bmpEncode(coindata.symbol);
-                        }
+
+                    //Dịnh dạng thông tin cho JSON
+                    if (tiny === true) {    //-> Nếu định dạng rút gọn
+                        //Định dạng ban đầu
                         var tnItem = {
                             nm: coindata.name,
                             sb: coindata.symbol,
-                            ic: img,
-                            mc: itemAll_values[itemAll_values.length-1]['marketcap'],
-                            pr: itemAll_values[itemAll_values.length-1]['price'],
-                            c01: itemAll_values[itemAll_values.length-1]['change_1h'],
-                            c24: itemAll_values[itemAll_values.length-1]['change_24h'],
+                            mc: hourlyValues_pre[hourlyValues_pre.length-1]['marketcap'],
+                            pr: hourlyValues_pre[hourlyValues_pre.length-1]['price'],
+                            c01: hourlyValues_pre[hourlyValues_pre.length-1]['change_1h'],
+                            c24: hourlyValues_pre[hourlyValues_pre.length-1]['change_24h'],
                         }
-                        if ( icon===false) {delete tnItem.ic};
+                        
+                        //Thêm bitmap nếu cần
+                        if ( icon===true) {
+                            var img = [];
+                            img = bmpEncode(coindata.symbol);
+                            tnItem.ic = img;
+                        }
+
+                        //Thêm dữ liệu 7 ngày
+                        if (typeChart==='7days') tnItem.max7days_values = max7daysChartValue_pre;
                         arrayCoinsFinal.push(tnItem);
-                    } else {
+                    } else {    //-> Định dạng đầy đủ nghĩa
                         arrayCoinsFinal.push( {
                             name: coindata.name,
                             symbol: coindata.symbol,
                             available_supply: coindata.available_supply,
-                            last_values: itemAll_values[itemAll_values.length-1],
-                            max7days_values: arrayValuesMax_Temp,
-                            all_values: itemAll_values
+                            last_values: hourlyValues_pre[hourlyValues_pre.length-1],
+                            max7days_values: max7daysChartValue_pre,
+                            all_values: hourlyValues_pre
                         })
-                }
-                   // console.log(chart+' '+tiny);
+                    }
+
+
+                   //Định dạng dữ liệu JSON cuối cùng (Thêm, chỉnh sủa, xóa item thừa)
                     if (chart===false && tiny===false) {        // coins/nonchart
+                        //Xóa hourly, max7day
                         if (arrayCoinsFinal[coin_index]!== undefined) {
-                        delete arrayCoinsFinal[coin_index].all_values;
-                       delete arrayCoinsFinal[coin_index].max7days_values;
+                            delete arrayCoinsFinal[coin_index].all_values;
+                            delete arrayCoinsFinal[coin_index].max7days_values;
                         }
-                    } else if (chart===true && tiny===true) {  // coins/
-                        delete arrayCoinsFinal[coin_index].max7days_values; 
-                    } else {
+                    } else if (chart===true && tiny===true) {  // tinychart7days
+                     
+                        if (typeChart==='7days') {
+                            delete arrayCoinsFinal[coin_index].mc;
+                            delete arrayCoinsFinal[coin_index].c01;
+                            delete arrayCoinsFinal[coin_index].c24;
+                            var mChart = [];
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev7.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev6.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev5.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev4.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev3.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev2.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev1.price, max7Day, min7Day, 100, 0));
+                            mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev0.price, max7Day, min7Day, 100, 0));
+                            delete arrayCoinsFinal[coin_index].max7days_values; 
+                            arrayCoinsFinal[coin_index].c7 = mChart;
+                        }
+                    } else { //chart7day
                         switch (typeChart) {
                             case '7days': 
                                 delete arrayCoinsFinal[coin_index].max7days_values.prev8;
