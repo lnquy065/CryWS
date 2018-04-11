@@ -323,11 +323,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
 
                         //Nếu lấy dữ liệu 7 ngày -> Tìm max mỗi ngày lưu vào max7daysChartValue_pre
                         if (typeChart==='7days') {
-                            if (max7daysChartValue_pre[iDate]===undefined || parseFloat(max7daysChartValue_pre[iDate].price) < parseFloat(jsonValues[i].price) && values.timeStamp>= timeStamp.current()-timeStamp.day(6)) {
-                                //delete values.change_1h;
-                                var tmp_price = parseFloat(values.price);
-                                if (tmp_price > max7Day) max7Day = tmp_price;
-                                if (tmp_price < min7Day) min7Day = tmp_price;
+                            if  ((max7daysChartValue_pre[iDate]===undefined || parseFloat(max7daysChartValue_pre[iDate].price) < parseFloat(jsonValues[i].price))) {
                                 max7daysChartValue_pre[iDate] = values;
                             }
                         }
@@ -383,6 +379,18 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             delete arrayCoinsFinal[coin_index].c24;
                             console.log(arrayCoinsFinal[coin_index].max7days_values);
                             console.log(max7Day+' '+min7Day);
+                            var mChart_tmp = [arrayCoinsFinal[coin_index].max7days_values.prev7.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev6.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev5.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev4.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev3.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev2.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev1.price,
+                            arrayCoinsFinal[coin_index].max7days_values.prev0.price];
+
+                            max7Day = Math.max(...mChart_tmp);
+                            min7Day = Math.min(...mChart_tmp);
+
                             var mChart = [];
                             mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev7.price, max7Day, min7Day, 48, 0));
                             mChart.push(mapChart(arrayCoinsFinal[coin_index].max7days_values.prev6.price, max7Day, min7Day, 48, 0));
