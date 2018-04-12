@@ -108,7 +108,7 @@ router.get('/tiny/:coinunits', getCoins_Tiny);
 router.get('/nonchart/', getAllCoins_NonChart);
 router.get('/nonchart/:coinunits', getCoins_NonChart);
 
-router.get('/tinychart7days/:coinunits', getCoins_Tiny_Chart7days);
+router.get('/tiny/chart7days/:coinunits', getCoins_Tiny_Chart7days);
 
 
 router.get('/chart7days/', getAllCoins_chart7days);
@@ -128,7 +128,7 @@ router.get('/offset/:skip/:limit', getAllCoins_Offset);
 
 router.get('/tiny/offset/:skip/:limit', getAllCoins_Tiny_Offset);
 
-router.get('/tinyicon/offset/:skip/:limit', getAllCoins_TinyIcon_Offset);
+router.get('/tiny/icon/offset/:skip/:limit', getAllCoins_TinyIcon_Offset);
 
 
 
