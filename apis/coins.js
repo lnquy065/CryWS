@@ -137,9 +137,9 @@ router.put('/name/:unit/:name', auth.Admin, function(req, res) {  //token admin
     var name = req.params.name;
     updateCoinField(req, res, {'name': name});
 })
-router.put('/unit/:unit/:unitn', auth.Admin, function(req, res) {  //token admin
+router.put('/symbol/:unit/:unitn', auth.Admin, function(req, res) {  //token admin
     var unitn = req.params.unitn;
-    updateCoinField(req, res, {'unit': unitn});
+    updateCoinField(req, res, {'symbol': unitn});
 })
 router.put('/mineable/:unit/:mineable', auth.Admin, function(req, res) {  //token admin
     var mineable = req.params.mineable;
