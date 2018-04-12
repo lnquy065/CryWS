@@ -7,7 +7,7 @@ var accountSchema = new Schema({
     password: String,
     rule: String,
     threshold: Number,
-    favorites: []
+    favorites: [] 
 });
 
 var Account = mongoose.model('accounts', accountSchema);
