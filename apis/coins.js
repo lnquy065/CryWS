@@ -141,18 +141,6 @@ router.put('/symbol/:unit/:unitn', auth.Admin, function(req, res) {  //token adm
     var unitn = req.params.unitn;
     updateCoinField(req, res, {'symbol': unitn});
 })
-router.put('/mineable/:unit/:mineable', auth.Admin, function(req, res) {  //token admin
-    var mineable = req.params.mineable;
-    updateCoinField(req, res, {'mineable': mineable});
-})
-router.put('/circulating/:unit/:circulating', auth.Admin, function(req, res) {  //token admin
-    var circulating = req.params.circulating;
-    updateCoinField(req, res, {'circulating': circulating});
-})
-router.put('/change/:unit/:change', auth.Admin, function(req, res) {  //token admin
-    var change = req.params.change;
-    updateCoinField(req, res, {'change': change});
-})
 
 //DELETE
 router.delete('/:unit', auth.Admin, function(req, res) {  //token admin
