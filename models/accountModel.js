@@ -6,6 +6,7 @@ var accountSchema = new Schema({
     username: String,
     password: String,
     rule: String,
+    threshold: Number,
     favorites: []
 });
 

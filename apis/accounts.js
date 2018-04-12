@@ -4,6 +4,7 @@ var db = require('../models');
 var jwt = require('jwt-simple');
 
 var auth = require('../auth');
+var bcrypt = require('bcryptjs');
 
 var getInformation = (req, res) => {
     var username = req.user.username;
@@ -76,6 +77,10 @@ var createAccount = (req, res) => {
     var json = req.body;
     var Account = db.Account;
     var addNew = false;
+    if (json.rule===undefined) json.rule='user';
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(json.password, salt);
+    json.password = hash;
 
     Account.update({username: json.username}, {}, {upsert: true}, (err, docs) => {
         console.log(docs);
@@ -87,6 +92,7 @@ var createAccount = (req, res) => {
                 $set: {
                     password: json.password,
                     rule: json.rule,
+                    threshold: 0,
                     favorites: []
                 }}, {upsert: true}, (err, stt) => {
                     res.status(401);
@@ -173,7 +179,7 @@ var loginToServer = (req, res) => {
             res.status(422);
             res.json( {success: false, message: 'notfound', errcode: 'LGE01'});
         } else {
-            if (password!==acc.password) {
+            if (!bcrypt.compareSync(password, acc.password)) {
                 res.status(422);
                 res.json( {success: false, message: 'wrongpassword', errcode: 'LGE02'});
             } else {
@@ -196,6 +202,9 @@ router.get('/favorites/', auth.Both, getFavorites); //token
 
 router.put('/password/:new', auth.Both, function(req, res) { //token
     updateField(req, res, {'password': req.params.new});
+})
+router.put('/threshold/:new', auth.Both, function(req, res) { //token
+    updateField(req, res, {'threshold': req.params.new});
 })
 
 router.delete('/:username', auth.Admin, deleteAccount); //token admin
