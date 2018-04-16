@@ -10,7 +10,7 @@ var getInformation = (req, res) => {
     var username = req.user.username;
     var Account = db.Account;
     if (username!==req.user.username && req.user.rule!=='admin') {
-        res.status(401);
+        res.status(404);
         res.json({success: false});
     } else {
 
@@ -36,7 +36,7 @@ var getFavorites = (req, res) => {
 
     Account.findOne({username: username}, function(err, acc) {
         if (err) {
-            res.status(422);
+            res.status(404);
             res.json({success: false});
         } else {
             var json = JSON.parse(JSON.stringify(acc));
@@ -83,7 +83,6 @@ var createAccount = (req, res) => {
     json.password = hash;
 
     Account.update({username: json.username}, {}, {upsert: true}, (err, docs) => {
-        console.log(docs);
         if (docs.upserted===undefined) {
             res.status(422);
             res.json( {success: false, message: 'username already exists', errcode: 'RGE01'});
@@ -95,12 +94,10 @@ var createAccount = (req, res) => {
                     threshold: 0,
                     favorites: []
                 }}, {upsert: true}, (err, stt) => {
-                    res.status(401);
+                    res.status(200);
                     res.json({success: true});
                 });
         }
-        res.status(402);
-            res.json( {success: true});
     })
     if (addNew) {
         console.log('addnew');
