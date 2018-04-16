@@ -1,21 +1,404 @@
+<!DOCTYPE html>
 <html>
-    <title>CryWS</title>
-    <body>
-        <h1 style="margin-bottom: 5px">Cry WS</h1>
-        <h2>Version 4.12.18</h2>
-        <h2><a href="https://docs.google.com/spreadsheets/d/1qXtyxvh_YKK7oULSX_mneJ5GvCK80Lb9dOKawcWMA0Q/edit?usp=sharing">API's documents</a></h2>        
-        <br>
-        <h3>Descriptions: A webservice provides infomation of cryptocurrencies</h3>
-        <h3>●Supported coins: 200</h3>
-        <h3>●Supported platforms: 6</h3>
-        <ul>
-            <li>Windows</li>
-            <li>Linux</li>
-            <li>Android</li>
-            <li>iOS</li>
-            <li>Web</li>
-            <li>Embedded System</li>
-        </ul>
-        <h5>Copyright © 2018 CryWS. All Rights Reserved</h5>
-    </body>
+<title>CryWS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="/res/homepage/js/jquery-3.3.1.min.js"></script>
+<style>
+body {font-family: "Lato", sans-serif}
+.mySlides {display: none}
+
+.platform {
+    width: 80px;
+    height: 80px;
+    margin: 0px 10px;
+}
+.platform:hover {
+    border-bottom: 2px solid #f26522;
+}
+
+.platform_tab {
+    width: 100%;
+    height: 100%;
+}
+
+.gioithieu {
+    text-align: left;
+    position: absolute;
+    height: 350px;;
+}
+
+.nentang {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+.nentang img {
+    width: 40px ;
+    height: 40px;
+    float: right;
+}
+
+.btn {
+    background: #1eb507;
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  width: 100px;
+    padding: 5px;
+    text-align: center;
+    margin-top: 20px;
+    display: block;
+    margin: 20px auto;
+height: 30px;
+}
+
+.btn:hover {
+  background: #fc963c;
+  background-image: -webkit-linear-gradient(top, #fc963c, #998235);
+  background-image: -moz-linear-gradient(top, #fc963c, #998235);
+  background-image: -ms-linear-gradient(top, #fc963c, #998235);
+  background-image: -o-linear-gradient(top, #fc963c, #998235);
+  background-image: linear-gradient(to bottom, #fc963c, #998235);
+  text-decoration: none;
+}
+
+.about_tag {
+    text-align: center;
+    display: inline-block;
+    margin: 10px;
+    
+    
+}
+
+.about_tag img {
+    border-radius: 50%;
+    width: 100px;
+}
+</style>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-black w3-card">
+      <img src="/res/homepage/cryteam/logo.png" width="100px" style="float: left;">
+    <!-- <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a> -->
+    <a href="#home" class="w3-bar-item w3-button w3-padding-large bitem">HOME</a>
+    <a href="#products" class="w3-bar-item w3-button w3-padding-large w3-hide-small  bitem">PLATFORMS</a>
+    <a href="#docs" class="w3-bar-item w3-button w3-padding-large w3-hide-small  bitem">DOCS</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small  bitem">ABOUT</a>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="w3-content" style="max-width:2000px;margin-top:46px">
+
+
+  <!-- The Home Section -->
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px; color: white;height: 100vh;" id="home">
+      <img src="res/homepage/home.jpg" style="width: 100%;   height: 100%;  top: 0px;
+      left: 0px;
+      position: absolute;
+      z-index: -1;">
+    <h2 class="w3-wide" >CryWS</h2>
+    <p class="w3-opacity"><i>Dịch Vụ Thông Tin Tiền Ảo</i></p>
+    <p class="w3-justify">Ngày nay, với tốc độ phát triển chóng mặt của Tiền Điện Tử, việc thông tin đến với các nhà đầu tư ngày càng quan trọng.
+        Chính vì thế, CryWS ra đời với mong muốn đem lại Dịch Vụ Thông Tin hữu ích cho người dùng với việc hỗ trợ Đa Nền Tảng và Giao Diện API tiện ích.
+        CryWS cung cấp các thông tin như Giá trị, Giá trị vốn hóa thị trường, Phần trăm thay đổi, Biểu đồ tăng trưởng và một số tiện ích khác.
+    </p>
+    <div class="w3-row w3-padding-32">
+
+        <img src="/res/homepage/coins.png" class="w3-round w3-margin-bottom" alt="Random Name" style="width:60%">
+      </div>
+    </div>
+  </div>
+
+    <!-- The Products Section -->
+    <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px; color: black;height: 100vh;" id="products">
+            <img src="res/homepage/home.jpg" style="width: 100%;   height: 100%;  top: 0px;
+            left: 0px;
+            position: absolute;
+            z-index: -1;">
+          <h2 class="w3-wide" >PLATFORMS</h2>
+          <p class="w3-opacity"><i>Các Nền Tảng Hỗ Trợ</i></p>
+          <div style="margin-top: 50px"> 
+              <img class="platform" src="/res/homepage/windows.png" id="windows">
+              <img class="platform" src="/res/homepage/ubuntu.png" id="ubuntu">
+              <img class="platform" src="/res/homepage/web.png" id="web">
+              <img class="platform" src="/res/homepage/android.png" id="android">
+              <img class="platform" src="/res/homepage/ios.png" id="ios">
+              <img class="platform" src="/res/homepage/nodemcu.png" id="nodemcu">
+        </div>
+
+
+        <div id="tab_windows" class="platform_tab" style="display: none">
+                <table style="margin-top: 50px">
+                    <tr>
+                        <td>
+                             <img src="/res/homepage/platforms/windows.png" width="500px">
+                         </td>
+                         <td class="gioithieu">
+                             <h3 style="color: #f26522">WINDOWS</h3>
+                             <br>● Đăng nhập / Đăng ký tài khoản
+                             <br>● Thay đổi thông tin tài khoản
+                             <br>● Xem danh sách các coin từ mà server cung cấp
+                             <br>● Biểu đồ thay đổi giá trị theo tuần
+                             <br>● Cho phép quản lý danh sách coin yêu thích
+                             <br>● Hỗ trợ tìm kiếm coins nhanh chóng
+
+                             <div class="btn">Download</div>
+                             <div class="nentang">
+                                 <img src="/res/homepage/nentang/cs.png">
+                             </div>
+                         </td>
+                 </tr>
+                </table>
+        </div>
+        <div id="tab_ubuntu" class="platform_tab" style="display: none">
+                <table style="margin-top: 50px">
+                    <tr>
+                        <td>
+                             <img src="/res/homepage/platforms/ubuntu.png" width="500px">
+                         </td>
+                         <td class="gioithieu">
+                             <h3 style="color: #f26522">LINUX</h3>
+                             <br>● Quản lý Coins theo các Collections
+                             <br>● Xem biểu đồ nhiều Coins cùng lúc
+                             <br>● Biểu đồ tùy chỉnh từ 01 đến 07 ngày
+                             <br>● Tùy chỉnh giá trị theo dõi trên biểu đồ
+                             <br>● Hỗ trợ xem biểu đồ dạng Cột, Tròn
+                             <div class="btn">Download</div>
+                             <div class="nentang">
+                                 <img src="/res/homepage/nentang/cpp.png">
+                                 <img src="/res/homepage/nentang/qt.png">
+                             </div>
+                         </td>
+                 </tr>
+                </table>
+        </div>
+        <div id="tab_web" class="platform_tab" style="display: none">
+                <table style="margin-top: 50px">
+                    <tr>
+                        <td>
+                             <img src="/res/homepage/platforms/ubuntu.png" width="500px">
+                         </td>
+                         <td class="gioithieu">
+                             <h3 style="color: #f26522">LINUX</h3>
+                             <br>● Quản lý Coins theo các Collections
+                             <br>● Xem biểu đồ nhiều Coins cùng lúc
+                             <br>● Biểu đồ tùy chỉnh từ 01 đến 07 ngày
+                             <br>● Tùy chỉnh giá trị theo dõi trên biểu đồ
+                             <br>● Hỗ trợ xem biểu đồ dạng Cột, Tròn
+                             <div class="btn">Truy Cập</div>
+                             <div class="nentang">
+                                 <img src="/res/homepage/nentang/cpp.png">
+                                 <img src="/res/homepage/nentang/qt.png">
+                             </div>
+                         </td>
+                 </tr>
+                </table>
+        </div>
+        <div id="tab_android" class="platform_tab" style="display: none">
+                <table style="margin-top: 50px">
+                    <tr>
+                        <td>
+                             <img src="/res/homepage/platforms/ubuntu.png" width="500px">
+                         </td>
+                         <td class="gioithieu">
+                             <h3 style="color: #f26522">LINUX</h3>
+                             <br>● Quản lý Coins theo các Collections
+                             <br>● Xem biểu đồ nhiều Coins cùng lúc
+                             <br>● Biểu đồ tùy chỉnh từ 01 đến 07 ngày
+                             <br>● Tùy chỉnh giá trị theo dõi trên biểu đồ
+                             <br>● Hỗ trợ xem biểu đồ dạng Cột, Tròn
+                             <div class="btn">Download</div>
+                             <div class="nentang">
+                                 <img src="/res/homepage/nentang/cpp.png">
+                                 <img src="/res/homepage/nentang/qt.png">
+                             </div>
+                         </td>
+                 </tr>
+                </table>
+        </div>
+        <div id="tab_ios" class="platform_tab" style="display: none">
+                <table style="margin-top: 50px">
+                    <tr>
+                        <td>
+                             <img src="/res/homepage/platforms/ios.png" width="500px">
+                         </td>
+                         <td class="gioithieu">
+                             <h3 style="color: #f26522">iOS</h3>
+                             
+                             <br>● Đăng nhập / Đăng ký tài khoản
+                             <br>● Xem danh sách các coin từ mà server cung cấp
+                             <br>● Biểu đồ thay đổi giá trị theo tuần
+                             <br>● Cho phép quản lý danh sách coin yêu thích
+                             <br>● Hỗ trợ tìm kiếm coins nhanh chóng
+                             
+                             <div class="btn">Download</div>
+                             <div class="nentang">
+                                 
+                                 <img src="/res/homepage/nentang/swift.png">
+                             </div>
+                         </td>
+                 </tr>
+                </table>
+        </div>
+        <div id="tab_nodemcu" class="platform_tab" style="display: none">
+                <table style="margin-top: 50px">
+                    <tr>
+                        <td>
+                             <img src="/res/homepage/platforms/ubuntu.png" width="500px">
+                         </td>
+                         <td class="gioithieu">
+                             <h3 style="color: #f26522">LINUX</h3>
+                             <br>● Quản lý Coins theo các Collections
+                             <br>● Xem biểu đồ nhiều Coins cùng lúc
+                             <br>● Biểu đồ tùy chỉnh từ 01 đến 07 ngày
+                             <br>● Tùy chỉnh giá trị theo dõi trên biểu đồ
+                             <br>● Hỗ trợ xem biểu đồ dạng Cột, Tròn
+                             <div class="nentang">
+                                 <img src="/res/homepage/nentang/cpp.png">
+                                 <img src="/res/homepage/nentang/qt.png">
+                             </div>
+                         </td>
+                 </tr>
+                </table>
+        </div>
+
+    </div>
+        
+
+          <div class="w3-row w3-padding-32">
+      
+            </div>
+          </div>
+        </div>
+
+  <!-- The Tour Section -->
+  <div class="w3-black" id="docs">
+    <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
+      <h2 class="w3-wide w3-center">DOCS</h2>
+      <p class="w3-opacity w3-center"><i>Sử Dụng CryWS APIs</i></p><br>
+        <br>● Coins:
+        <br>&#09; - Hỗ trợ thông tin tối đa 200 coins trong hệ thống
+        <br>&#09; - Lấy thông tin tất cả, một phần, một vài coins tùy chọn
+        <br>&#09; - Thông tin bao gồm: Dữ liệu hằng giờ, Dữ liệu gần nhất, Biểu đồ tuần gần nhất, Dữ liệu rút gọn
+        <br>&#09; - Cho phép Tìm Kiếm, Thêm, Xóa, Sửa
+        <br>● Accounts:
+        <br>&#09; - Đăng Ký / Đăng Nhập
+        <br>&#09; - Đổi mật khẩu, Thêm ưu thích
+        <br>&#09; - Cài đặt ngưỡng thông báo cho coins
+        <br>● Bảo Mật:
+        <br>&#09; - Phân quyền sử dụng cho hệ thống thông qua Token
+        <br>&#09; - Sử dụng mã hóa một chiều cho việc lưu mật khẩu
+        <a class="btn" href="https://docs.google.com/spreadsheets/d/1qXtyxvh_YKK7oULSX_mneJ5GvCK80Lb9dOKawcWMA0Q/edit?usp=sharing">Chi Tiết</a>
+        <div style="display: block; width: 160px; margin: 20px auto">
+            <img src="/res/homepage/nentang/nodejs.png" width="50px"> 
+            <img src="/res/homepage/nentang/mongodb.png" width="50px">
+            <img src="/res/homepage/nentang/jwt.png" width="50px">
+        </div>
+    </div>
+  </div>
+
+  <!-- Ticket Modal -->
+  <div id="ticketModal" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-teal w3-center w3-padding-32"> 
+        <span onclick="document.getElementById('ticketModal').style.display='none'" 
+       class="w3-button w3-teal w3-xlarge w3-display-topright">×</span>
+        <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>Tickets</h2>
+      </header>
+      <div class="w3-container">
+        <p><label><i class="fa fa-shopping-cart"></i> Tickets, $15 per person</label></p>
+        <input class="w3-input w3-border" type="text" placeholder="How many?">
+        <p><label><i class="fa fa-user"></i> Send To</label></p>
+        <input class="w3-input w3-border" type="text" placeholder="Enter email">
+        <button class="w3-button w3-block w3-teal w3-padding-16 w3-section w3-right">PAY <i class="fa fa-check"></i></button>
+        <button class="w3-button w3-red w3-section" onclick="document.getElementById('ticketModal').style.display='none'">Close <i class="fa fa-remove"></i></button>
+        <p class="w3-right">Need <a href="#" class="w3-text-blue">help?</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Contact Section -->
+  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+    <h2 class="w3-wide w3-center">ABOUT US</h2>
+    <p class="w3-opacity w3-center"><i>Nhóm Phát Triển CryWS</i><br><i>Học Viện Công Nghệ Bưu Chính Viễn Thông CS HCM - D14CQCP01</i></p>
+    
+    <div class="w3-row w3-padding-32">
+        <div style="display: block; margin: 100px auto;  display: flex;
+        justify-content: center;">
+
+       
+        <div class="about_tag">
+            <img src="/res/homepage/cryteam/tqh.png">
+            <br><b>Trần Quốc Huy</b>
+            <br>(Android/Web)
+        </div>
+        <div class="about_tag">
+                <img src="/res/homepage/cryteam/ndk.png">
+                <br><b>Nguyễn Đăng Khoa</b>
+                <br>(iOS)
+        </div>
+        <div class="about_tag">
+                <img src="/res/homepage/cryteam/lnq.png">
+                <br><b>Lương Ngọc Quý</b>
+                <br>(Server/NodeMCU)
+            </div>
+            <div class="about_tag">
+                    <img src="/res/homepage/cryteam/tqt.png">
+                    <br><b>Thiều Quang Tuấn</b>
+                    <br>(Linux)
+                </div>
+        <div class="about_tag">
+                <img src="/res/homepage/cryteam/hqt.png">
+                <br><b>Hoàng Quang Thắng</b>
+                <br>(Windows)
+            </div>
+        </div>
+        
+    </div>
+    
+  </div>
+  
+<!-- End Page Content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge" style="font-size: 20px">
+        Copyright © 2018 CryWS. All Rights Reserved
+  <p class="w3-medium">Powered by w3.css, Remake by LnQ</p>
+</footer>
+
+<script>
+    $(document).ready( function() {
+        $("#windows").click();
+    });
+    
+    var imagePath = "/res/homepage/";
+    var curPlatform = "windows";
+    $(".platform").click( function() {
+        var id = this.id;
+        $("#"+curPlatform).attr("src", imagePath+curPlatform+".png");
+        
+        $(this).attr("src", imagePath+id+"2"+".png");
+
+        $("#tab_"+curPlatform).fadeOut(300);
+        $("#tab_"+id).fadeIn(300);
+
+        curPlatform = id;
+    });
+</script>
+
+</body>
 </html>

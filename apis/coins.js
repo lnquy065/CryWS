@@ -233,7 +233,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
     //Run Mongodb
     Coin.aggregate(pipeline, (err, coin) => {
             if (err) {
-                res.status(422);
+                res.status(404);
                 res.json( {success: false} );
             }
             if (coin) {
@@ -403,6 +403,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     
                 }
                 jsonFinal = JSON.parse(JSON.stringify(arrayCoinsFinal));
+                if (arrayCoinsFinal.length === 0) res.status(404);
                 res.json(jsonFinal);
                 }
         });
