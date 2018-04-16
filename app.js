@@ -22,7 +22,6 @@ app.use(bodyParser.urlencoded( {extended: true}));
 app.use(morgan('dev'));
 
     //--public resource
-app.use('/res/coins', express.static('res/coins'));
 app.use('/res/coins_high', express.static('res/coins_high'));
 
     //--routing: dinh tuyen
