@@ -82,7 +82,7 @@ request.get({
 
     for (i=0; i< jsonCoins.length;i++) {
          updateItemDB(jsonCoins[i]);
-         console.log('Update '+(i+1)+'/200');
+         console.log('Update '+(i+1)+'/'+jsonCoins.length);
     }
     
     }
