@@ -241,6 +241,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                 
                 //Duyet danh sach tung Coin
                 for (coin_index=0;coin_index<coin.length;coin_index++) {
+                     if (coin[coin_index].values.length < 10) continue;
                     var jsonValues = {};
                     var jsonFinal = {};
                     jsonValues = JSON.parse(JSON.stringify(coin[coin_index].values));
@@ -269,7 +270,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                            // console.log("next");
                             continue;
                         }
-
+                       
                         var change1h_Percent = parseFloat((jsonValues[last_index].price - jsonValues[last_index-1].price)*100/jsonValues[last_index].price).toFixed(2);
                         var change24h_I = jsonValues.findIndex( values => {
                            
