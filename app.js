@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 
 var router = require('./apis'); //apis
-var config = require('./config');   //configs
 
 var compression = require('compression');
 

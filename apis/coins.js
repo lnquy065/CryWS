@@ -161,7 +161,7 @@ function removeCoin(res, unit) {
 function updateCoinField(req, res, data) {
     var Coin = db.Coin;
 
-    Coin.findOneAndUpdate({unit: req.params.unit}, {$set: data}, (err,odoc)=> {
+    Coin.findOneAndUpdate({symbol: req.params.unit}, {$set: data}, (err,odoc)=> {
         if (err) {
             console.error(err);
             res.send(err);
