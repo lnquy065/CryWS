@@ -241,6 +241,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                 
                 //Duyet danh sach tung Coin
                 for (coin_index=0;coin_index<coin.length;coin_index++) {
+                  
                      if (coin[coin_index].values.length < 10) continue;
                     var jsonValues = {};
                     var jsonFinal = {};
@@ -395,9 +396,12 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                     } else { //chart7day
                         switch (typeChart) {
                             case '7days': 
-                                delete arrayCoinsFinal[coin_index].max7days_values.prev8;
+                              //  console.log(arrayCoinsFinal[coin_index]);
+                              if (arrayCoinsFinal[coin_index] !== undefined) {
+                                  delete arrayCoinsFinal[coin_index].max7days_values.prev8;
                                 delete arrayCoinsFinal[coin_index].last_values;
                                 delete arrayCoinsFinal[coin_index].all_values;
+                              }
                                 break;
                         }
                     }
