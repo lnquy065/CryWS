@@ -148,8 +148,15 @@ var deleteFavorites = (req, res) => {
 }
 
 function updateField(req, res, data) {
+    
     var username = req.user.username;
     var Account = db.Account;
+
+    if (data.password !== undefined) {
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(data.password, salt);
+        data.password = hash;
+    }
     if (username!==req.user.username) {
         res.status(401);
         return;
