@@ -316,9 +316,13 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             if  ((max7daysChartValue_pre[iDate]===undefined || parseFloat(max7daysChartValue_pre[iDate].price) < parseFloat(jsonValues[i].price))) {
                                 max7daysChartValue_pre[iDate] = values;
                             }
+                            max7daysChartValue_pre["prev0"] = max7daysChartValue_pre["prev1"];
                         }
                     }
 
+                    if (typeChart==='7days') {
+                        max7daysChartValue_pre["prev0"] = max7daysChartValue_pre["prev2"];
+                    }
 
                     //Dịnh dạng thông tin cho JSON
                     if (tiny === true) {    //-> Nếu định dạng rút gọn
