@@ -199,7 +199,7 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                 $filter: {
                     input: '$values',
                     as: 'item',
-                    cond: {$gte: ['$$item.timeStamp', (timeStamp.current()-timeStamp.day(range+1))]}    //get values 8days ago
+                    cond: {$gte: ['$$item.timeStamp', ((timeStamp.current()+timeStamp.hour(7) )-timeStamp.day(range+1))]}    //get values 8days ago
                 }
             }
         }
