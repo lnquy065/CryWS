@@ -369,6 +369,9 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             delete arrayCoinsFinal[coin_index].c24;
                             console.log(arrayCoinsFinal[coin_index].max7days_values);
                             console.log(max7Day+' '+min7Day);
+
+                            
+
                             var mChart_tmp = [arrayCoinsFinal[coin_index].max7days_values.prev7.price,
                             arrayCoinsFinal[coin_index].max7days_values.prev6.price,
                             arrayCoinsFinal[coin_index].max7days_values.prev5.price,
@@ -377,6 +380,8 @@ function getCoinsInRange_f (req, res, range, all=false, chart=false, typeChart='
                             arrayCoinsFinal[coin_index].max7days_values.prev2.price,
                             arrayCoinsFinal[coin_index].max7days_values.prev1.price,
                             arrayCoinsFinal[coin_index].max7days_values.prev0.price];
+
+                            arrayCoinsFinal[coin_index].max7days_values.prev0.price = last_values.price;
 
                             max7Day = Math.max(...mChart_tmp);
                             min7Day = Math.min(...mChart_tmp);
