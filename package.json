@@ -24,7 +24,7 @@
     "morgan": "^1.9.0",
     "node-binance-api": "^0.4.25",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
+    "passport-jwt": "^4.0.1",
     "pixel-png": "0.0.1",
     "sort-json-array": "^0.1.7"
   }
